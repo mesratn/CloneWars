@@ -37,4 +37,13 @@ public class Personnage {
     {
         ennemy.hp -= intelligence - ennemy.def;
     }
+    
+    public void levelUp()
+    {
+        hp *= 1.5;
+        def *= 1.5;
+        power *= 1.5;
+        force *= 1.5;
+        intelligence *= 1.5;
+    }
 }
