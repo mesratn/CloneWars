@@ -12,6 +12,6 @@ package clone;
 public class Jawa extends Personnage{
     public Jawa() {
 		
-        super(200, 400, 400, 0, 400);
+        super(400, 400, 400, 0, 400);
     }
 }
