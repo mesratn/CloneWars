@@ -20,6 +20,7 @@ public class Personnage {
     protected int currentZone;
     protected int save;
     protected int hp;
+    protected int maxHp;
     protected int def;
     protected int power;
     protected int force;
@@ -95,6 +96,84 @@ public class Personnage {
             return false;
     }
     
+    
+    public Personnage(int pv, int df, int pw, int fo, int intel, String image, int zone, int savenb, int level, int pex)
+    {
+        lvl = level;
+        hp = pv;
+        maxHp = pv;
+        def = df;
+        power = pw;
+        force = fo;
+        intelligence = intel;
+        picture = image;
+        xp = pex;
+        currentZone = zone;
+        save = savenb;
+    }
+    
+    public void checkLvl()
+    {
+        if (xp == 100 * (lvl * 2))
+            this.levelUp();
+    }
+    
+    public void physicalAttack(Personnage ennemy)
+    {
+        ennemy.setHp(ennemy.getHp() - (this.getPower() - ennemy.getDef()));
+        if (ennemy.getHp() < 0)
+            ennemy.setHp(0);
+    }
+    
+    public void forceAttack(Personnage ennemy)
+    {
+        ennemy.setHp(ennemy.getHp() - (this.getForce() / 10 * 2));
+        if (ennemy.getHp() < 0)
+            ennemy.setHp(0);
+    }
+    
+    public void armedAttack(Personnage ennemy)
+    {
+        int dgt = 0;
+        if (ennemy.getDef() < this.getIntelligence())
+            dgt = this.getIntelligence() - ennemy.getDef();
+        ennemy.setHp(ennemy.getHp() - dgt);
+        if (ennemy.getHp() < 0)
+            ennemy.setHp(0);
+        System.out.println(this.getPicture() + " : " + this.getLvl());
+        System.out.println(this.getIntelligence() + " - " + ennemy.getDef() + " = " + dgt);
+    }
+        
+    public void levelUp()
+    {
+        this.setMaxHp(this.getMaxHp() * 3 / 2);
+        this.setDef(this.getDef() * 3 / 2);
+        this.setPower(this.getPower() * 3 / 2);
+        this.setForce(this.getPower() * 3 / 2);
+        this.setIntelligence(this.getIntelligence() * 3 / 2);
+        this.setXp(0);
+        this.Heal();
+    }
+
+    public void Heal() {
+        this.setHp(this.getMaxHp());
+    }
+    
+    public void setPosX(int posX) {
+        this.posX = posX;
+    }
+
+    public void setPosY(int posY) {
+        this.posY = posY;
+    }
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+    
     public int getCurrentZone() {
         return currentZone;
     }
@@ -141,57 +220,50 @@ public class Personnage {
     public String getPicture() {
         return picture;
     }
-    
-    public Personnage(int pv, int df, int pw, int fo, int intel, String image, int zone, int savenb, int level, int pex)
-    {
-        lvl = level;
-        hp = pv;
-        def = df;
-        power = pw;
-        force = fo;
-        intelligence = intel;
-        picture = image;
-        xp = pex;
-        currentZone = zone;
-        save = savenb;
-    }
-    
-    public void checkLvl()
-    {
-        if (xp == 100 * (lvl * 2))
-            this.levelUp();
-    }
-    
-    public void physicalAttack(Personnage ennemy)
-    {
-        ennemy.hp -= power - ennemy.def;
-    }
-    
-    public void forceAttack(Personnage ennemy)
-    {
-        ennemy.hp -= (force/10) * 2;
-    }
-    
-    public void armedAttack(Personnage ennemy)
-    {
-        ennemy.hp -= intelligence - ennemy.def;
-    }
-        
-    public void levelUp()
-    {
-        hp *= 1.5;
-        def *= 1.5;
-        power *= 1.5;
-        force *= 1.5;
-        intelligence *= 1.5;
-        xp = 0;
+
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
-    public void setPosX(int posX) {
-        this.posX = posX;
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
     }
 
-    public void setPosY(int posY) {
-        this.posY = posY;
+    public int getMaxHp() {
+        return maxHp;
     }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
+    }
+
+    public void setDef(int def) {
+        this.def = def;
+    }
+
+    public void setPower(int power) {
+        this.power = power;
+    }
+
+    public void setForce(int force) {
+        this.force = force;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setXpValue(int xpValue) {
+        this.xpValue = xpValue;
+    }
+    
+    
 }

@@ -350,10 +350,19 @@ public class Zone {
              return gridDimensionX;
           }
 
+         public Personnage makeEnnemy() {
+             return oRoom.CreateEnnemies();
+         }
+         
          public int getGridDimensionY() {
              return gridDimensionY;
          }
-	
-	
-	
+         
+         public char getContent(int x, int y) {
+             return grid[x][y];
+         }
+
+        public Room getoRoom() {
+          return oRoom;
+        }
 }

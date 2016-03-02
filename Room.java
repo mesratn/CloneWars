@@ -13,6 +13,7 @@ package clone2;
 import java.util.Vector;
 
 public class Room {
+        private Factory factory;
 	private int lvl;
 	private Vector<Personnage> liste;
 	private char type; //backChar = ' ', wallChar = 'X', cellChar = ' ', room = 'O'
@@ -20,12 +21,11 @@ public class Room {
 	public Room(char type, int lvl) {
 		this.type = type;
 		this.lvl = lvl;
+                factory = new Factory(lvl);
 	}
 	
-	public void CreateEnnemies () {
-		if (this.type == 'O') {
-			//generate random ennemies with right level
-		}
+	public Personnage CreateEnnemies () {
+            return factory.generate();
 	}
 
 	public int getLvl() {
@@ -34,6 +34,7 @@ public class Room {
 
 	public void setLvl(int lvl) {
 		this.lvl = lvl;
+                factory.setLvl(lvl);
 	}
 
 	public Vector<Personnage> getListe() {

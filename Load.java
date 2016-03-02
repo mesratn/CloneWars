@@ -72,8 +72,8 @@ public class Load {
         
         Image delete = new Image("Delete.png");
         ImageView deleteV = new ImageView(delete);
-        deleteV.setFitHeight(50);
-        deleteV.setFitWidth(50);
+        deleteV.setFitHeight(200);
+        deleteV.setFitWidth(300);
         deleteV.setStyle("-fx-opacity: 0.7;");
         deleteV.setOnMouseEntered((MouseEvent me) -> {
             deleteV.setStyle("-fx-opacity: 0.9;");
@@ -278,6 +278,8 @@ public class Load {
         
         Image retour = new Image("Back.png");
         ImageView retourV = new ImageView(retour);
+        retourV.setFitHeight(200);
+        retourV.setFitWidth(300);
         
         HBox bottom = new HBox();
         bottom.getChildren().add(retourV);
@@ -381,8 +383,6 @@ public class Load {
                 default:
                     break;
             }
-        } catch (Exception e) {
-            
-        }
+        } catch (Exception e) {}
     }
 }

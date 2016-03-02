@@ -37,9 +37,7 @@ public class Menu extends Application {
                 URL url = new URL("http://www.starwars-universe.com/images/multimedia/Sons/Sabres-Laser/Allumages/01-%20sabre%20laser%201.wav");
                 AudioClip ac = Applet.newAudioClip(url);
                 ac.play(); 
-            } catch (Exception e) {
-                
-            }
+            } catch (Exception e) {}
             btn.setStyle("-fx-color: rgba(0, 0, 0, 0.4)");
             Create test = new Create();
             test.start(primaryStage);
@@ -53,9 +51,7 @@ public class Menu extends Application {
                 URL url = new URL("http://www.starwars-universe.com/images/multimedia/Sons/Sabres-Laser/Allumages/01-%20sabre%20laser%201.wav");
                 AudioClip ac = Applet.newAudioClip(url);
                 ac.play(); 
-            } catch (Exception e) {
-                
-            }
+            } catch (Exception e) {}
             Load load = new Load();
             load.start(primaryStage);
         });

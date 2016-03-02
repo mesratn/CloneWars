@@ -13,6 +13,10 @@ import java.util.Random;
  */
 public class Factory {
     private int lvl;
+
+    public void setLvl(int lvl) {
+        this.lvl = lvl;
+    }
     
     public Factory(int level)
     {
@@ -23,13 +27,15 @@ public class Factory {
     {
         Personnage target;
         Random rand = new Random();
+        Random randLvl = new Random();
+        int bonus = randLvl.nextInt(3) - 1;
         int choice = rand.nextInt(18);
         if (choice < 10)
-            target = this.makeClone(lvl);
+            target = this.makeClone(lvl+ bonus);
         else if (choice < 15)
-            target = this.makeSoldat(lvl);
+            target = this.makeSoldat(lvl + bonus);
         else
-            target = this.makeDroid(lvl);
+            target = this.makeDroid(lvl + bonus);
         return target;
     }
     

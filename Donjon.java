@@ -7,11 +7,9 @@ package clone2;
 
 import java.util.Random;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,56 +26,117 @@ import javafx.stage.Stage;
  */
 public class Donjon extends Application{
     
-    private BorderPane bp = new BorderPane();
-    private boolean fight = false;
+    private int sizeMaze = 6;
     private Personnage pj = null;
-    private Personnage target = null;
-    private int zoneLevel = 1;
-    private Zone zone = new Zone(6, zoneLevel);
-    // add currentZone attribut
-    // add current Romme Attribut
+    private Personnage ennemy;
+    private BorderPane bp;
+    private HBox Action;
+    private VBox Stat;
+    private HBox Center;
+    private Zone zone;
+    GridPane actionMove;
     
     public Donjon(Jedi player) {
         pj = player;
+        this.actionMove = new GridPane();
+        this.zone = new Zone(sizeMaze, pj.getCurrentZone());
+        this.Center = new HBox();
+        this.Stat = new VBox();
+        this.Action = new HBox();
+        this.bp = new BorderPane();
+        this.ennemy = null;
     }
     
     public Donjon(Sith player)
     {
         pj = player;
+        this.actionMove = new GridPane();
+        this.zone = new Zone(sizeMaze, pj.getCurrentZone());
+        this.Center = new HBox();
+        this.Stat = new VBox();
+        this.Action = new HBox();
+        this.bp = new BorderPane();
+        this.ennemy = null;
     }
     
     public Donjon(BountyHunter player) {
         pj = player;
+        this.actionMove = new GridPane();
+        this.zone = new Zone(sizeMaze, pj.getCurrentZone());
+        this.Center = new HBox();
+        this.Stat = new VBox();
+        this.Action = new HBox();
+        this.bp = new BorderPane();
+        this.ennemy = null;
     }
     
     public Donjon(ImperialAgent player)
     {
         pj = player;
+        this.actionMove = new GridPane();
+        this.zone = new Zone(sizeMaze, pj.getCurrentZone());
+        this.Center = new HBox();
+        this.Stat = new VBox();
+        this.Action = new HBox();
+        this.bp = new BorderPane();
+        this.ennemy = null;
     }
     
     public Donjon(Mercenary player) {
         pj = player;
+        this.actionMove = new GridPane();
+        this.zone = new Zone(sizeMaze, pj.getCurrentZone());
+        this.Center = new HBox();
+        this.Stat = new VBox();
+        this.Action = new HBox();
+        this.bp = new BorderPane();
+        this.ennemy = null;
     }
     
     public Donjon(Jawa player)
     {
         pj = player;
+        this.actionMove = new GridPane();
+        this.zone = new Zone(sizeMaze, pj.getCurrentZone());
+        this.Center = new HBox();
+        this.Stat = new VBox();
+        this.Action = new HBox();
+        this.bp = new BorderPane();
+        this.ennemy = null;
     }
         
     @Override
     public void start(Stage primaryStage) {
         zone.solve();
         System.out.println(zone);
+        System.out.println(zone.getLvl());
         
         pj.setPosX(zone.getGridDimensionX() - 2);
-        pj.setPosX(zone.getGridDimensionY() - 1);
+        pj.setPosY(zone.getGridDimensionY() - 1);
       
-        Personnage ennemy = null;
+        this.showStat();
+        this.showAction();
+        
+        Image img = new Image(pj.getPicture());
+        ImageView imgView = new ImageView(img);
+        
+        Center.getChildren().add(imgView);
+        imgView.setFitHeight(primaryStage.getHeight() / 1.2);
+        imgView.setFitWidth(primaryStage.getWidth() / 3);
+        Center.setAlignment(Pos.CENTER_LEFT);
+        
+        Action.setStyle("-fx-background-image: url(\"fond-bleu.png\"); -fx-opacity: 0.8;-fx-border-style: solid; -fx-border-color: white;");
+        Action.setAlignment(Pos.CENTER);
+        
+        bp.setStyle("-fx-background-image: url(\"couloir.jpg\");-fx-background-size: cover;-fx-background-repeat: no-repeat;");     
+        bp.setCenter(Center);
+        
+        Scene scene = new Scene(bp, 1900, 960);
+        primaryStage.setScene(scene);
+    }
+    
+    public void showStat() {
         String fontCSS = "-fx-font: 40px Impact, serif";
-        VBox Stat = new VBox();
-        HBox Center = new HBox();
-        HBox Action = new HBox();
-        GridPane actionMove = new GridPane();
         
         Label level = new Label();
         Label xp = new Label();
@@ -114,20 +173,11 @@ public class Donjon extends Application{
         Stat.setSpacing(20);
         Stat.setPadding(new Insets(50, 0, 0, 0));
         Stat.setStyle("-fx-background-image: url(\"fond-bleu.png\"); -fx-opacity: 0.8;-fx-border-style: solid; -fx-border-color: white");
-        
-        Image img = new Image(pj.getPicture());
-        ImageView imgView = new ImageView(img);
-        
-        Center.getChildren().add(imgView);
-        imgView.setFitHeight(primaryStage.getHeight() / 1.2);
-        imgView.setFitWidth(primaryStage.getWidth() / 3);
-        Center.setAlignment(Pos.CENTER_LEFT);
-        
-        Image move = new Image("Move.png");
-        ImageView moveView = new ImageView(move);
-        moveView.setFitHeight(50);
-        moveView.setFitWidth(100);
-                
+           
+        bp.setLeft(Stat);        
+    }
+    
+    public void showAction() {
         Image save = new Image("Save.png");
         ImageView saveView = new ImageView(save);
         saveView.setFitHeight(50);
@@ -138,44 +188,15 @@ public class Donjon extends Application{
             saveView.setStyle("-fx-opacity: 0.5;");
             pj.saveVerif();
         });
-        
-        
-        try {
-            Image up = new Image("Up.png");
-            ImageView upV = new ImageView(up);
-            Image down = new Image("Down.png");
-            ImageView downV = new ImageView(down);
-            Image left = new Image("Left.png");
-            ImageView leftV = new ImageView(left);
-            Image right = new Image("Right.png");
-            ImageView rightV = new ImageView(right);
-
-            actionMove.add(upV, 2, 1);
-            actionMove.add(downV, 2, 3);
-            actionMove.add(leftV, 1, 2);
-            actionMove.add(rightV, 3, 2);
-            
-        } catch(Exception e) {
-            
-        }
-        
+        this.refresh();
         Action.getChildren().add(actionMove);
-        Action.setStyle("-fx-background-image: url(\"fond-bleu.png\"); -fx-opacity: 0.8;-fx-border-style: solid; -fx-border-color: white;");
-        Action.setAlignment(Pos.CENTER);
         
-        bp.setStyle("-fx-background-image: url(\"couloir.jpg\");-fx-background-size: cover;-fx-background-repeat: no-repeat;");        
-        bp.setLeft(Stat);
-        bp.setCenter(Center);
         bp.setBottom(Action);
-        
-        Scene scene = new Scene(bp, 1900, 960);
-        primaryStage.setScene(scene);
     }
     
     public void changeBG() {
         Random rand = new Random();
         int choice = rand.nextInt(8) + 1;
-        System.out.println(choice);
         switch (choice){
             case 1: 
                 bp.setStyle("-fx-background-image: url(\"couloir.jpg\");-fx-background-size: cover;-fx-background-repeat: no-repeat;");
@@ -202,5 +223,151 @@ public class Donjon extends Application{
                 bp.setStyle("-fx-background-image: url(\"couloir6.jpg\");-fx-background-size: cover;-fx-background-repeat: no-repeat;");
                 break;
             }
+    }
+    
+    public void refresh() {
+        try {
+            actionMove.getChildren().clear();
+        } catch(Exception e) {}
+        try {
+            Image up = new Image("up.png");
+            ImageView upV = new ImageView(up);
+            Image down = new Image("Down.png");
+            ImageView downV = new ImageView(down);
+            Image left = new Image("Left.png");
+            ImageView leftV = new ImageView(left);
+            Image right = new Image("Right.png");
+            ImageView rightV = new ImageView(right);
+            Image empty = new Image("Vide.png");
+            ImageView emptyV = new ImageView(empty);
+            
+            upV.setFitHeight(50);
+            upV.setFitWidth(100);
+            downV.setFitHeight(50);
+            downV.setFitWidth(100);
+            leftV.setFitHeight(50);
+            leftV.setFitWidth(100);
+            rightV.setFitHeight(50);
+            rightV.setFitWidth(100);
+            emptyV.setFitHeight(50);
+            emptyV.setFitWidth(100);
+                        
+            try {         
+                if (zone.getContent(pj.getPosX(), pj.getPosY() - 1) != 'X' && pj.getPosY() > 0)
+                    actionMove.add(upV, 2, 1);
+                if (zone.getContent(pj.getPosX() - 1, pj.getPosY()) != 'X' && pj.getPosX() > 0)
+                    actionMove.add(leftV, 1, 2);
+                if (zone.getContent(pj.getPosX() + 1, pj.getPosY()) != 'X' && pj.getPosX() < zone.getGridDimensionX())
+                    actionMove.add(rightV, 3, 2);
+                if (zone.getContent(pj.getPosX(), pj.getPosY() + 1) != 'X' && pj.getPosY() < zone.getGridDimensionY())
+                    actionMove.add(downV, 2, 3);
+            } catch (Exception e) {}
+            
+            upV.setOnMouseClicked((MouseEvent eventUp) -> {
+                this.Move(3);
+            });
+            downV.setOnMouseClicked((MouseEvent eventDown) -> {
+                this.Move(4);
+            });
+            leftV.setOnMouseClicked((MouseEvent eventLeft) -> {
+                this.Move(1);
+            });
+            rightV.setOnMouseClicked((MouseEvent eventRight) -> {
+                this.Move(2);
+            });
+            
+        } catch(Exception e) {}
+    }
+    
+    public void Move(int pos) {
+        this.changeBG();
+                System.out.println(pj.getHp());
+        switch (pos) {
+            case 1 :
+                pj.setPosX(pj.getPosX() - 1);
+                break;
+            case 2:
+                pj.setPosX(pj.getPosX() + 1);
+                break;
+            case 3:
+                pj.setPosY(pj.getPosY() - 1);
+                break;
+            case 4:
+                pj.setPosY(pj.getPosY() + 1);
+                break;
+        }
+        if (pj.getPosX() == 1 && pj.getPosY() == 0)
+        {
+            this.zone = new Zone(sizeMaze, zone.getLvl() + 1);   
+            zone.solve();
+            System.out.println(zone);
+            
+            pj.setPosX(zone.getGridDimensionX() - 2);
+            pj.setPosY(zone.getGridDimensionY() - 1);
+        }
+        else {
+            ennemy = zone.makeEnnemy();
+            this.inFight();
+        }
+        this.refresh();
+    }
+    
+    public void inFight() {
+        if (ennemy != null) {
+            this.FightMenu();
+            try {
+                Thread.sleep(500);
+            } catch(Exception e) {}
+            while (ennemy.estVivant() && pj.estVivant())
+            {
+                ennemy.armedAttack(pj);
+                pj.armedAttack(ennemy);
+            }
+            if (!ennemy.estVivant())
+            {
+                pj.setXp(ennemy.getXpValue());
+                ennemy = null;
+                pj.Heal();
+                pj.checkLvl();
+                System.out.println(pj.getXp() + "<-");
+            }
+            else
+                System.out.println("Game Over");
+        }
+    }
+    
+    public void FightMenu() {
+        try {
+            actionMove.getChildren().clear();
+        } catch(Exception e) {}
+        try {
+            Image attack = new Image("Attack.png");
+            ImageView attackV = new ImageView(attack);
+            Image force = new Image("Force.png");
+            ImageView forceV = new ImageView(force);
+            Image empty = new Image("Vide.png");
+            ImageView emptyV = new ImageView(empty);
+            
+            attackV.setFitHeight(50);
+            attackV.setFitWidth(100);
+            forceV.setFitHeight(50);
+            forceV.setFitWidth(100);
+            emptyV.setFitHeight(50);
+            emptyV.setFitWidth(100);
+                        
+            try {
+                actionMove.add(attackV, 1, 1);
+                if (pj.getForce() > 0)
+                    actionMove.add(forceV, 2, 1);
+            } catch (Exception e) {}
+            
+            attackV.setOnMouseClicked((MouseEvent eventUp) -> {
+                pj.armedAttack(ennemy);
+            });
+            forceV.setOnMouseClicked((MouseEvent eventDown) -> {
+                pj.forceAttack(ennemy);
+            });
+            
+        } catch(Exception e) {}
     }
 }
