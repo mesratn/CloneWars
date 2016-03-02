@@ -3,19 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clone;
+package clone2;
 
 /**
  *
  * @author Kevin
  */
-public class Clone {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+public class Clone extends Personnage{
+    public Clone() {
+        super(100 , 100, 100, 0, 100, "clone.png", 1, 0, 1, 0);
     }
-    
+    public Clone(int zone, int save, int pv, int df, int fo,int pw, int intel, int lvl, int pex, String pic) {
+        super(pv, df, pw, fo, intel, pic, zone, save, lvl, pex);
+    }
 }

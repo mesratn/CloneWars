@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clone;
+package clone2;
 
 /**
  *
@@ -11,6 +11,9 @@ package clone;
  */
 public class Sith extends Personnage{
     public Sith() {
-        super(100, 100, 200, 200, 200);
+        super(100, 100, 200, 200, 200, "sith.png", 1, 0, 1, 0);
+    }
+    public Sith(int zone, int save, int pv, int df, int fo,int pw, int intel, int lvl, int pex, String pic) {
+        super(pv, df, pw, fo, intel, pic, zone, save, lvl, pex);
     }
 }

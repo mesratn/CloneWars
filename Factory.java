@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clone;
+package clone2;
 
 import java.util.Random;
 
@@ -12,7 +12,6 @@ import java.util.Random;
  * @author Kevin
  */
 public class Factory {
-    
     private int lvl;
     
     public Factory(int level)
@@ -20,21 +19,23 @@ public class Factory {
         lvl = level;
     }
 
-    public void generate()
+    public Personnage generate()
     {
+        Personnage target;
         Random rand = new Random();
         int choice = rand.nextInt(18);
         if (choice < 10)
-            this.makeClone(lvl);
+            target = this.makeClone(lvl);
         else if (choice < 15)
-            this.makeSoldat(lvl);
+            target = this.makeSoldat(lvl);
         else
-            this.makeDroid(lvl);
+            target = this.makeDroid(lvl);
+        return target;
     }
     
-    public Clonne makeClone(int lvl)
+    public Clone makeClone(int lvl)
     {
-        Clonne clone = new Clonne();
+        Clone clone = new Clone();
         for (int i = 0; i < lvl; i++)
             clone.levelUp();
         return clone;

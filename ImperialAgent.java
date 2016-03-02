@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package clone;
+package clone2;
 
 /**
  *
@@ -11,6 +11,9 @@ package clone;
  */
 public class ImperialAgent extends Personnage{
     public ImperialAgent() {
-        super(350, 100, 100, 0, 350);
+        super(350, 100, 100, 0, 350, "ImperialAgent.png", 1, 0, 1, 0);
+    }
+    public ImperialAgent(int zone, int save, int pv, int df, int fo,int pw, int intel, int lvl, int pex, String pic) {
+        super(pv, df, pw, fo, intel, pic, zone, save, lvl, pex);
     }
 }
