@@ -11,9 +11,9 @@ package clone2;
  */
 public class Sith extends Personnage{
     public Sith() {
-        super(100, 100, 200, 200, 200, "sith.png", 1, 0, 1, 0);
+        super(100, 100, 200, 200, 200, "sith.png", 1, 0, 1, 0, true);
     }
     public Sith(int zone, int save, int pv, int df, int fo,int pw, int intel, int lvl, int pex, String pic) {
-        super(pv, df, pw, fo, intel, pic, zone, save, lvl, pex);
+        super(pv, df, pw, fo, intel, pic, zone, save, lvl, pex, true);
     }
 }

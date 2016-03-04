@@ -28,7 +28,7 @@ public class Personnage {
     protected int lvl;
     protected int xp;
     protected String picture;
-    protected int xpValue = 10 * lvl;
+    protected boolean pj;
     
     public void saveVerif(){
         File s1 = new File("./Save/sv1.txt");
@@ -97,7 +97,7 @@ public class Personnage {
     }
     
     
-    public Personnage(int pv, int df, int pw, int fo, int intel, String image, int zone, int savenb, int level, int pex)
+    public Personnage(int pv, int df, int pw, int fo, int intel, String image, int zone, int savenb, int level, int pex, boolean player)
     {
         lvl = level;
         hp = pv;
@@ -110,17 +110,26 @@ public class Personnage {
         xp = pex;
         currentZone = zone;
         save = savenb;
+        pj = player;
+        System.out.println("personnage xp : " + this.getXp());
     }
     
-    public void checkLvl()
+    public boolean checkLvl()
     {
-        if (xp == 100 * (lvl * 2))
+        if (this.getXp() >= 100 * (this.getLvl() * 2)) {
             this.levelUp();
+            return true;
+        }
+        else
+            return false;
     }
     
     public void physicalAttack(Personnage ennemy)
     {
-        ennemy.setHp(ennemy.getHp() - (this.getPower() - ennemy.getDef()));
+        int dgt = 0;
+        if (ennemy.getDef() < this.getPower())
+            dgt = this.getPower() - ennemy.getDef();
+        ennemy.setHp(ennemy.getHp() - dgt);
         if (ennemy.getHp() < 0)
             ennemy.setHp(0);
     }
@@ -140,18 +149,20 @@ public class Personnage {
         ennemy.setHp(ennemy.getHp() - dgt);
         if (ennemy.getHp() < 0)
             ennemy.setHp(0);
-        System.out.println(this.getPicture() + " : " + this.getLvl());
-        System.out.println(this.getIntelligence() + " - " + ennemy.getDef() + " = " + dgt);
     }
         
     public void levelUp()
     {
+        this.setLvl(this.getLvl() + 1);
         this.setMaxHp(this.getMaxHp() * 3 / 2);
         this.setDef(this.getDef() * 3 / 2);
         this.setPower(this.getPower() * 3 / 2);
-        this.setForce(this.getPower() * 3 / 2);
+        this.setForce(this.getForce() * 3 / 2);
         this.setIntelligence(this.getIntelligence() * 3 / 2);
-        this.setXp(0);
+        if (pj == true)
+            this.setXp(0);
+        else
+            this.setXp(this.getXp() * 3 / 2);
         this.Heal();
     }
 
@@ -183,10 +194,6 @@ public class Personnage {
     }
     public void setCurrentZone(int currentZone) {
         this.currentZone = currentZone;
-    }
-    
-    public int getXpValue() {
-        return xpValue;
     }
 
     public int getHp() {
@@ -259,11 +266,5 @@ public class Personnage {
 
     public void setPicture(String picture) {
         this.picture = picture;
-    }
-
-    public void setXpValue(int xpValue) {
-        this.xpValue = xpValue;
-    }
-    
-    
+    }   
 }

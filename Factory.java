@@ -20,7 +20,7 @@ public class Factory {
     
     public Factory(int level)
     {
-        lvl = level;
+        this.lvl = level;
     }
 
     public Personnage generate()
@@ -28,10 +28,10 @@ public class Factory {
         Personnage target;
         Random rand = new Random();
         Random randLvl = new Random();
-        int bonus = randLvl.nextInt(3) - 1;
+        int bonus = randLvl.nextInt(3);
         int choice = rand.nextInt(18);
         if (choice < 10)
-            target = this.makeClone(lvl+ bonus);
+            target = this.makeClone(this.lvl+ bonus);
         else if (choice < 15)
             target = this.makeSoldat(lvl + bonus);
         else

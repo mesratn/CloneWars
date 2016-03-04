@@ -7,9 +7,11 @@ package clone2;
 
 import java.util.Random;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,7 +36,19 @@ public class Donjon extends Application{
     private VBox Stat;
     private HBox Center;
     private Zone zone;
-    GridPane actionMove;
+    private GridPane actionMove;
+    private Label level = new Label();
+    private Label xp = new Label();
+    private Label hp = new Label();
+    private Label def = new Label();
+    private Label power = new Label();
+    private Label force = new Label();
+    private Label intelligence = new Label();
+    private GridPane map = new GridPane();
+    private Image imgEnn;
+    private ImageView imgEnnV;
+    private Stage secondStage = new Stage();
+    
     
     public Donjon(Jedi player) {
         pj = player;
@@ -107,9 +121,10 @@ public class Donjon extends Application{
         
     @Override
     public void start(Stage primaryStage) {
+        secondStage = primaryStage;
+        
         zone.solve();
         System.out.println(zone);
-        System.out.println(zone.getLvl());
         
         pj.setPosX(zone.getGridDimensionX() - 2);
         pj.setPosY(zone.getGridDimensionY() - 1);
@@ -130,21 +145,13 @@ public class Donjon extends Application{
         
         bp.setStyle("-fx-background-image: url(\"couloir.jpg\");-fx-background-size: cover;-fx-background-repeat: no-repeat;");     
         bp.setCenter(Center);
-        
+                
         Scene scene = new Scene(bp, 1900, 960);
         primaryStage.setScene(scene);
     }
     
     public void showStat() {
         String fontCSS = "-fx-font: 40px Impact, serif";
-        
-        Label level = new Label();
-        Label xp = new Label();
-        Label hp = new Label();
-        Label def = new Label();
-        Label power = new Label();
-        Label force = new Label();
-        Label intelligence = new Label();
         
         level.setText("Level : " + pj.getLvl());
         xp.setText("xp : " + pj.getXp());
@@ -189,8 +196,8 @@ public class Donjon extends Application{
             pj.saveVerif();
         });
         this.refresh();
-        Action.getChildren().add(actionMove);
         
+        Action.getChildren().add(actionMove);
         bp.setBottom(Action);
     }
     
@@ -229,8 +236,8 @@ public class Donjon extends Application{
         try {
             actionMove.getChildren().clear();
         } catch(Exception e) {}
-        try {
-            Image up = new Image("up.png");
+        try {          
+            Image up = new Image("Up.png");
             ImageView upV = new ImageView(up);
             Image down = new Image("Down.png");
             ImageView downV = new ImageView(down);
@@ -251,7 +258,8 @@ public class Donjon extends Application{
             rightV.setFitWidth(100);
             emptyV.setFitHeight(50);
             emptyV.setFitWidth(100);
-                        
+            
+            
             try {         
                 if (zone.getContent(pj.getPosX(), pj.getPosY() - 1) != 'X' && pj.getPosY() > 0)
                     actionMove.add(upV, 2, 1);
@@ -274,14 +282,12 @@ public class Donjon extends Application{
             });
             rightV.setOnMouseClicked((MouseEvent eventRight) -> {
                 this.Move(2);
-            });
-            
+            });            
         } catch(Exception e) {}
     }
     
     public void Move(int pos) {
         this.changeBG();
-                System.out.println(pj.getHp());
         switch (pos) {
             case 1 :
                 pj.setPosX(pj.getPosX() - 1);
@@ -305,7 +311,7 @@ public class Donjon extends Application{
             pj.setPosX(zone.getGridDimensionX() - 2);
             pj.setPosY(zone.getGridDimensionY() - 1);
         }
-        else {
+        else if (zone.getContent(pj.getPosX(), pj.getPosY()) == 'O'){
             ennemy = zone.makeEnnemy();
             this.inFight();
         }
@@ -314,60 +320,129 @@ public class Donjon extends Application{
     
     public void inFight() {
         if (ennemy != null) {
-            this.FightMenu();
             try {
-                Thread.sleep(500);
+                Action.getChildren().clear();
             } catch(Exception e) {}
-            while (ennemy.estVivant() && pj.estVivant())
-            {
-                ennemy.armedAttack(pj);
-                pj.armedAttack(ennemy);
-            }
-            if (!ennemy.estVivant())
-            {
-                pj.setXp(ennemy.getXpValue());
-                ennemy = null;
-                pj.Heal();
-                pj.checkLvl();
-                System.out.println(pj.getXp() + "<-");
-            }
-            else
-                System.out.println("Game Over");
+            this.FightMenu();
+            imgEnn = new Image(ennemy.getPicture());
+            imgEnnV = new ImageView(imgEnn);
+            imgEnnV.setFitHeight(800);
+            imgEnnV.setFitWidth(400);
+            Center.getChildren().add(imgEnnV);
         }
     }
     
     public void FightMenu() {
+        
         try {
-            actionMove.getChildren().clear();
-        } catch(Exception e) {}
-        try {
-            Image attack = new Image("Attack.png");
-            ImageView attackV = new ImageView(attack);
-            Image force = new Image("Force.png");
-            ImageView forceV = new ImageView(force);
-            Image empty = new Image("Vide.png");
-            ImageView emptyV = new ImageView(empty);
+            Button attack2 = new Button("Physic Attack");
+            Button attack = new Button("Armed Attack");
+            Button force = new Button("Force");
             
-            attackV.setFitHeight(50);
-            attackV.setFitWidth(100);
-            forceV.setFitHeight(50);
-            forceV.setFitWidth(100);
-            emptyV.setFitHeight(50);
-            emptyV.setFitWidth(100);
+            attack.setOnAction((ActionEvent eventUp) -> {
+                pj.armedAttack(ennemy);
+                if (!ennemy.estVivant())
+                {
+                    Center.getChildren().remove(imgEnnV);
+                    pj.setXp(pj.getXp() + ennemy.getXp());
+                    ennemy = null;
+                    pj.Heal();
+                    pj.checkLvl();
+                    Action.getChildren().clear();
+                    this.editLabel();
+                    this.showAction();
+                }
+                else{
+                    ennemy.physicalAttack(pj);
+                    this.editLabel();
+                }
+                if (!pj.estVivant()) {
+                    GameOver lose = new GameOver();
+                    lose.start(secondStage);
+                }
+            });
+            
+            attack2.setOnAction((ActionEvent eventUp) -> {
+                pj.physicalAttack(ennemy);
+                if (!ennemy.estVivant())
+                {
+                    Center.getChildren().remove(imgEnnV);
+                    pj.setXp(pj.getXp() + ennemy.getXp());
+                    ennemy = null;
+                    pj.Heal();
+                    pj.checkLvl();
+                    Action.getChildren().clear();
+                    this.editLabel();
+                    this.showAction();
+                }
+                else{
+                    ennemy.physicalAttack(pj);
+                    this.editLabel();
+                }
+                if (!pj.estVivant()) {
+                    GameOver lose = new GameOver();
+                    lose.start(secondStage);
+                }
+            });
+            
+            force.setOnAction((ActionEvent eventDown) -> {
+                pj.forceAttack(ennemy);
+                if (!ennemy.estVivant())
+                {
+                    Center.getChildren().remove(imgEnnV);
+                    pj.setXp(pj.getXp() + ennemy.getXp());
+                    ennemy = null;
+                    pj.Heal();
+                    pj.checkLvl();
+                    Action.getChildren().clear();
+                    this.editLabel();
+                    this.showAction();
+                }
+                else{
+                    ennemy.physicalAttack(pj);
+                    this.editLabel();
+                }
+                if (!pj.estVivant()) {
+                    GameOver lose = new GameOver();
+                    lose.start(secondStage);
+                }
+            });
+            
                         
             try {
-                actionMove.add(attackV, 1, 1);
+                Action.getChildren().add(attack);
+                Action.getChildren().add(attack2);
                 if (pj.getForce() > 0)
-                    actionMove.add(forceV, 2, 1);
+                    Action.getChildren().add(force);
             } catch (Exception e) {}
             
-            attackV.setOnMouseClicked((MouseEvent eventUp) -> {
-                pj.armedAttack(ennemy);
-            });
-            forceV.setOnMouseClicked((MouseEvent eventDown) -> {
-                pj.forceAttack(ennemy);
-            });
             
         } catch(Exception e) {}
+    }
+    
+    public void editLabel() {
+        Stat.getChildren().remove(level);
+        Stat.getChildren().remove(xp);
+        Stat.getChildren().remove(hp);
+        Stat.getChildren().remove(def);
+        Stat.getChildren().remove(power);
+        Stat.getChildren().remove(force);
+        Stat.getChildren().remove(intelligence);
+        
+        level.setText("level : " + pj.getLvl());
+        xp.setText("xp : " + pj.getXp());
+        hp.setText("hp : " + pj.getHp());
+        def.setText("def : " + pj.getDef());
+        power.setText("power : " + pj.getPower());
+        force.setText("force : " + pj.getForce());
+        intelligence.setText("intel : " + pj.getIntelligence());
+        
+        Stat.getChildren().add(level);
+        Stat.getChildren().add(xp);
+        Stat.getChildren().add(hp);
+        Stat.getChildren().add(def);
+        Stat.getChildren().add(power);
+        Stat.getChildren().add(force);
+        Stat.getChildren().add(intelligence);
     }
 }
